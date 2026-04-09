@@ -1,0 +1,68 @@
+# =============================================================================
+# Configuration — "If You Don't Score, You Concede"
+# =============================================================================
+
+data:
+  statsbomb:
+    competitions:
+      # On commence petit : une seule compétition pour prototyper
+      - competition_id: 11    # La Liga
+        season_id: 90         # 2020/21
+      # Décommenter progressivement :
+      # - competition_id: 2     # Premier League
+      #   season_id: 90         # 2020/21
+      # - competition_id: 16    # Champions League
+      #   season_id: 90         # 2020/21
+
+  understat:
+    leagues: ["EPL", "La_liga"]
+    seasons: ["2020", "2021", "2022", "2023"]
+    rate_limit_seconds: 1.5
+
+  cache:
+    enabled: true
+    directory: "data/raw"
+
+analysis:
+  rolling_windows: [5, 10, 15]
+  future_windows: [5, 10, 15]
+  underperf_thresholds: [0.3, 0.5, 0.8, 1.0]
+  exclude_penalties: true
+  exclude_own_goals: true
+  exclude_last_minutes: 5
+  min_match_minutes: 85
+  min_sample_size: 100
+  alpha: 0.05
+  multiple_testing_method: "fdr_bh"
+
+modeling:
+  logistic:
+    covariates: ["cum_underperf", "score_diff", "minute", "minute_sq", "strength_diff"]
+    cluster_var: "match_id"
+  cox:
+    covariates: ["cum_underperf", "score_diff", "strength_diff"]
+  cross_validation:
+    n_folds: 5
+    group_col: "match_id"
+  bootstrap:
+    n_iterations: 5000
+    random_seed: 42
+  permutation:
+    n_iterations: 10000
+    random_seed: 42
+  null_model:
+    n_simulations: 1000
+    random_seed: 42
+
+output:
+  figure_dpi: 300
+  figure_format: "png"
+  color_palette:
+    home: "#2196F3"
+    away: "#F44336"
+    treated: "#E53935"
+    control: "#43A047"
+    neutral: "#607D8B"
+    low: "#4CAF50"
+    medium: "#FF9800"
+    high: "#F44336"

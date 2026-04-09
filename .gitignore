@@ -1,0 +1,31 @@
+# Data (trop volumineux pour Git)
+data/raw/
+data/processed/
+data/external/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Outputs (régénérables)
+outputs/figures/
+outputs/tables/
+!outputs/figures/pub_*.png
